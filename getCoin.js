@@ -1,6 +1,5 @@
 const fs = require('fs');
-var selectedPars = [];
-var coins = [];
+//Tüm coin bilgilerini çeker coins nesnesine ve Json a kaydeder
 function getCoin() {
     let url = "https://api.binance.com/api/v3/ticker/price";
     function httpGet(theUrl) {
@@ -21,56 +20,77 @@ function getCoin() {
     }
     let result = httpGet(url);
     coins = JSON.parse(result);
+    console.log("Tüm Coinler çekildi");
     fs.writeFileSync("./data.json", result);
     return coins;
 }
+//Verilen nesnede verilen stringi arar
 function searchJ(arr, toSearch) {
     for (var i = 0; i < arr.length; i++) {
         for (key in arr[i]) {
             if (arr[i][key].indexOf(toSearch) != -1) {
-                return arr[i];
+                return arr[i];//!!!!!
             }
         }
     }
-
 }
-function getUSDTPar(arr) {
+//Tüm coin listesinde USDT paritesinde olanları çeker
+function getUSDTPar(coins) {
     var usdtPar = [];
-    for (var i = 0; i < arr.length; i++) {
-        if (arr[i].symbol.endsWith("USDT") == true) {
-            usdtPar.push(arr[i]);
+    for (var i = 0; i < coins.length; i++) {
+        if (coins[i].symbol.endsWith("USDT") == true) {
+            usdtPar.push(coins[i]);
         }
     }
     return usdtPar;
 }
-function writePars(arr) {
+//Tüm USDT paritesindeki coinleri checkbox şeklinde listeler
+function writePars(usdtPar) {
     let div = document.getElementById("checkbox");
-    for (i = 0; i < arr.length; i++) {
-        div.innerHTML += arr[i].symbol + '<input type="checkbox" name"boxes" value="' + arr[i].symbol + '"><br>';
+    for (var i = 0; i < usdtPar.length; i++) {
+        div.innerHTML += usdtPar[i].symbol + '<input type="checkbox" name"boxes" value="' + usdtPar[i].symbol + '"><br>';
     }
 }
+//Seçilen işlem çiftlerini içeren checkbox ın value sunu diziye kaydeder
 function submitPars() {
+    var selectedPars = [];
     var checks = document.querySelectorAll('input[type="checkbox"]:checked')
-    for (i = 0; i < checks.length; i++) {
+    for (var i = 0; i < checks.length; i++) {
         selectedPars.push(checks[i].value);
     }
     console.log(selectedPars);
-    writePrices(listSelected(selectedPars));
+    return selectedPars;
 }
-function listSelected(arr) {
+//Seçilen diziyi coinlerin içerisinden çekip başka bir dizide tutar
+function listSelected(selectedPars) {
     var selectObjects = [];
-    for (i = 0; i < arr.length; i++) {
-        selectObjects.push(searchJ(coins, arr[i]));
+    for (var i = 0; i < selectedPars.length; i++) {
+        selectObjects.push(searchJ(coins, selectedPars[i]));
     }
     return selectObjects;
 }
-function writePrices(arr) {
+//Tüm istenen coinleri ekrana yazdırır
+function writePrices(selectObjects) {
     var body = document.getElementById("body");
     body.innerHTML = "";
-    for (i = 0; i < arr.length; i++) {
-        body.innerHTML += arr[i].symbol + "<br>" + arr[i].price + "<hr>";
+    for (i = 0; i < selectObjects.length; i++) {
+        body.innerHTML += selectObjects[i].symbol + "<br>" + selectObjects[i].price + "<hr>";
     }
 }
-var allCoins = getCoin();
-var usdtPar = getUSDTPar(allCoins);
+function loop() {
+    setInterval(function () {
+        getCoin();
+        getUSDTPar();
+        writePrices();
+    }, 3000)
+}
+var coins = getCoin();
+var usdtPar = getUSDTPar(coins);
 writePars(usdtPar);
+document.getElementById("sbm").addEventListener("click", function (event) {
+    var selectedPars = submitPars();
+    var selectObjects = listSelected(selectedPars);
+    writePrices(selectObjects);
+})
+
+//Key is not defined listSelected() daki coins de bir sıkıntı olabilir 
