@@ -25,12 +25,10 @@ function getCoin() {
     return coins;
 }
 //Verilen nesnede verilen stringi arar
-function searchJ(arr, toSearch) {
-    for (var i = 0; i < arr.length; i++) {
-        for (key in arr[i]) {
-            if (arr[i][key].indexOf(toSearch) != -1) {
-                return arr[i];//!!!!!
-            }
+function searchJ(objects, toSearch) {
+    for (var i = 0; i < objects.length; i++) {
+        if (objects[i].symbol.indexOf(toSearch) != -1) {
+            return objects[i];
         }
     }
 }
@@ -70,27 +68,35 @@ function listSelected(selectedPars) {
     return selectObjects;
 }
 //Tüm istenen coinleri ekrana yazdırır
-function writePrices(selectObjects) {
+function writePrices(selectObjects, oldPrices) {
     var body = document.getElementById("body");
     body.innerHTML = "";
-    for (i = 0; i < selectObjects.length; i++) {
-        body.innerHTML += selectObjects[i].symbol + "<br>" + selectObjects[i].price + "<hr>";
+    for (var i = 0; i < selectObjects.length; i++) {
+        if (selectObjects[i].price < oldPrices[i].price) {
+            body.innerHTML += selectObjects[i].symbol + "<br>" + ' <p style="color: red; font-size: large;font-weight: bold;">' + selectObjects[i].price + "</p><hr>";
+        }
+        else if (selectObjects[i].price > oldPrices[i].price) {
+            body.innerHTML += selectObjects[i].symbol + "<br>" + ' <p style="color: green; font-size: large;font-weight: bold;">' + selectObjects[i].price + "</p><hr>";
+        }
+        else {
+            body.innerHTML += selectObjects[i].symbol + "<br>" + ' <p style="color: gray; font-size: large;font-weight: bold;">' + selectObjects[i].price + "</p><hr>";
+        }
     }
 }
-function loop() {
-    setInterval(function () {
-        getCoin();
-        getUSDTPar();
-        writePrices();
-    }, 3000)
-}
+var oldPrices = [];
 var coins = getCoin();
 var usdtPar = getUSDTPar(coins);
 writePars(usdtPar);
 document.getElementById("sbm").addEventListener("click", function (event) {
     var selectedPars = submitPars();
     var selectObjects = listSelected(selectedPars);
-    writePrices(selectObjects);
+    oldPrices = selectObjects;
+    writePrices(selectObjects, oldPrices);
+    setInterval(function () {
+        coins = getCoin();
+        usdtPar = getUSDTPar(coins);
+        selectObjects = listSelected(selectedPars);
+        writePrices(selectObjects, oldPrices);
+        oldPrices = selectObjects;
+    }, 3000)
 })
-
-//Key is not defined listSelected() daki coins de bir sıkıntı olabilir 
