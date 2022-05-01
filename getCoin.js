@@ -46,7 +46,7 @@ function getUSDTPar(coins) {
 function writePars(usdtPar) {
     let div = document.getElementById("checkbox");
     for (var i = 0; i < usdtPar.length; i++) {
-        div.innerHTML += usdtPar[i].symbol + '<input type="checkbox" name"boxes" value="' + usdtPar[i].symbol + '"><br>';
+        div.innerHTML += "<p style='color:white; font-size:medium;font-weight:bold;'>" + usdtPar[i].symbol + "</p>" + '<input type="checkbox" name"boxes" value="' + usdtPar[i].symbol + '"><br>';
     }
 }
 //Seçilen işlem çiftlerini içeren checkbox ın value sunu diziye kaydeder
@@ -70,16 +70,16 @@ function listSelected(selectedPars) {
 //Tüm istenen coinleri ekrana yazdırır
 function writePrices(selectObjects, oldPrices) {
     var body = document.getElementById("body");
-    body.innerHTML = "";
+    body.innerHTML = '<div class="draggable-area"></div>';
     for (var i = 0; i < selectObjects.length; i++) {
         if (selectObjects[i].price < oldPrices[i].price) {
-            body.innerHTML += selectObjects[i].symbol + "<br>" + ' <p style="color: red; font-size: large;font-weight: bold;">' + selectObjects[i].price + "</p><hr>";
+            body.innerHTML += "<p style='color:white; font-size:medium;font-weight:bold;'>" + selectObjects[i].symbol + "</p>" + "<br>" + ' <p style="color: red; font-size: medium;font-weight: bold;">' + selectObjects[i].price + "</p><hr>";
         }
         else if (selectObjects[i].price > oldPrices[i].price) {
-            body.innerHTML += selectObjects[i].symbol + "<br>" + ' <p style="color: green; font-size: large;font-weight: bold;">' + selectObjects[i].price + "</p><hr>";
+            body.innerHTML += "<p style='color:white; font-size:medium;font-weight:bold;'>" + selectObjects[i].symbol + "</p>" + "<br>" + ' <p style="color: green; font-size: medium;font-weight: bold;">' + selectObjects[i].price + "</p><hr>";
         }
         else {
-            body.innerHTML += selectObjects[i].symbol + "<br>" + ' <p style="color: gray; font-size: large;font-weight: bold;">' + selectObjects[i].price + "</p><hr>";
+            body.innerHTML += "<p style='color:white; font-size:medium;font-weight:bold;'>" + selectObjects[i].symbol + "</p>" + "<br>" + ' <p style="color: gray; font-size: medium;font-weight: bold;">' + selectObjects[i].price + "</p><hr>";
         }
     }
 }
