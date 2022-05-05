@@ -19,13 +19,34 @@
             position: fixed;
             top: 0px;
         }
+
+        .navigateDown {
+            width: 50px;
+            height: 50px;
+            position: fixed;
+            bottom: 0px;
+            right: 0px;
+            color: black;
+            background-color: bisque;
+        }
+
+        .navigateUp {
+            width: 50px;
+            height: 50px;
+            position: fixed;
+            top: 0px;
+            right: 0px;
+            color: black;
+            background-color: bisque;
+        }
     </style>
 </head>
 
 <body id="body">
     <div class="draggable-area"></div>
-    <div id="checkbox">
-    </div>
+    <div id="checkbox"></div>
+    <div class="navigateDown"><a href="#sbm">Yat aşşaa</a></div>
+    <div class="navigateUp"><a href="#">Çık yukarı</a></div>
     <button id="sbm">Get Prices!</button>
     <script type="module" src="./getCoin.js">
     </script>

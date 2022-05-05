@@ -45,9 +45,11 @@ function getUSDTPar(coins) {
 //Tüm USDT paritesindeki coinleri checkbox şeklinde listeler
 function writePars(usdtPar) {
     let div = document.getElementById("checkbox");
+    div.innerHTML = "<table>"
     for (var i = 0; i < usdtPar.length; i++) {
-        div.innerHTML += "<p style='color:white; font-size:medium;font-weight:bold;'>" + usdtPar[i].symbol + "</p>" + '<input type="checkbox" name"boxes" value="' + usdtPar[i].symbol + '"><br>';
+        div.innerHTML += "<tr><td><p style='color:white; font-size:medium;font-weight:bold;'>" + usdtPar[i].symbol + "</p>" + '<input type="checkbox" name="boxes" value="' + usdtPar[i].symbol + '"></td></tr>';
     }
+    div.innerHTML += "</table>"
 }
 //Seçilen işlem çiftlerini içeren checkbox ın value sunu diziye kaydeder
 function submitPars() {
