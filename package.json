@@ -3,6 +3,12 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "build": {
+    "appId": "app.id",
+    "mac": {
+      "category": "Binance.Price.Feed.app"
+    }
+  },
   "scripts": {
     "start": "electron .",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -12,6 +18,10 @@
   "license": "ISC",
   "dependencies": {
     "electron": "^18.2.0",
+    "electron-builder": "^23.0.3",
     "electron-in-page-search": "^1.3.2"
+  },
+  "devDependencies": {
+    "electron-packager": "^15.5.1"
   }
 }
